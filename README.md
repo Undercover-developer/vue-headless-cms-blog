@@ -1,4 +1,4 @@
-# blog-template
+# Headless CMS Blog
 
 ## Project setup
 ```
