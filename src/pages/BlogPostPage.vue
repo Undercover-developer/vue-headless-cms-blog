@@ -60,6 +60,11 @@ import { timeSince } from '@/helpers/date_time_formater';
 export default {
     name: 'BlogPostPage',
     components: { BlogHeader, BlogCardMini, LoaderIcon },
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.getPost(to.params.id);
+        });
+    },
     beforeUpdate(){
         this.getPost(this.$route.params.id);
         if(this.posts.length === 0){
@@ -67,7 +72,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters('posts',['post', 'posts'])
+        ...mapGetters('posts',['post', 'posts', 'loading'])
     },
     methods: {
         ...mapActions('posts',['getPost', 'getPosts']),
