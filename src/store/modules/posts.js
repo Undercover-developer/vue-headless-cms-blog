@@ -35,17 +35,27 @@ export const posts = {
                     }
                 );
         },
-        loadMorePosts({ dispatch, commit, }) {
+        loadMorePosts({ commit, state}) {
             commit("setPage");
-            dispatch("getPosts");
+            commit("getPostRequest");
+            getBlogPosts(state.page, state.perPage)
+                .then(
+                    response => {
+                        commit("loadMorePostsSuccess", response.data);
+                    }
+                );
         }
     },
     mutations: {
         getPostsRequest(state) {
             state.loading = true;
         },
-        getPostsSuccess(state, posts) {
+        loadMorePostsSuccess(state, posts) {
             state.posts = [...state.posts, ...posts];
+            state.loading = false;
+        },
+        getPostsSuccess(state, posts) {
+            state.posts = posts;
             state.loading = false;
         },
         getPostsFailure(state, error) {

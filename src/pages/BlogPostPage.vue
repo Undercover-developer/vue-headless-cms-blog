@@ -7,7 +7,7 @@
                     By {{ post._embedded.author[0].name }}
                 </span>
                 <span class="BlogPostPage__content__header-time">
-                    2 Month Ago
+                    {{ timeSince(post.date) }}
                 </span>
             </div>
             <div class="BlogPostPage__content__title">
@@ -21,6 +21,13 @@
                 </div>
             </div>
         </div>
+        <div class="grid-row" v-if="!Object.keys(post).length">
+            <div class="grid-column-12">
+            <div class="BlogHomePage__content__loader-icon">
+                <loader-icon></loader-icon>
+            </div>
+            </div>
+        </div>
         <div class="BlogPostPage__footer">
             <div class="BlogPost_footer__title">
                 <h1>More Articles</h1>
@@ -29,6 +36,7 @@
                 <div class="grid-row">
                     <div class="grid-column-lg-4 grid-column-md-6 grid-column-sm-12"  v-for="post in posts.slice(1, 4)" :key="post.id">
                         <blog-card-mini
+                            :id="post.id"
                             :title="post.title.rendered"
                             :description="post.excerpt.rendered"
                             :image="post.jetpack_featured_media_url"
@@ -46,11 +54,13 @@
 <script>
 import BlogHeader from '../components/common/BlogHeader.vue'
 import BlogCardMini from '@/components/common/BlogCardMini.vue';
+import LoaderIcon from '../components/common/Loader.vue'
 import { mapGetters, mapActions } from 'vuex';
+import { timeSince } from '@/helpers/date_time_formater';
 export default {
     name: 'BlogPostPage',
-    components: { BlogHeader, BlogCardMini },
-    mounted(){
+    components: { BlogHeader, BlogCardMini, LoaderIcon },
+    beforeUpdate(){
         this.getPost(this.$route.params.id);
         if(this.posts.length === 0){
             this.getPosts();
@@ -60,7 +70,8 @@ export default {
         ...mapGetters('posts',['post', 'posts'])
     },
     methods: {
-        ...mapActions('posts',['getPost', 'getPosts'])
+        ...mapActions('posts',['getPost', 'getPosts']),
+        timeSince
     },
 }
 </script>
@@ -97,7 +108,7 @@ export default {
                 h1 {
                     font-style: normal;
                     font-weight: 900;
-                    font-size: 32px;
+                    font-size: 34px;
                     line-height: 38px;
                     color: #2C2C2C;
                     margin-bottom: 0.7rem;
@@ -106,6 +117,7 @@ export default {
             &__body {
                 &__image {
                     margin-bottom: 1rem;
+                    text-align: center;
                     img {
                         width: 85%;
                         object-fit: cover;
