@@ -11,7 +11,7 @@
                 </span>
             </div>
             <div class="BlogPostPage__content__title">
-                <h1>{{ post.title.rendered }}</h1>
+                <h1 v-html="post.title.rendered"></h1>
             </div>
             <div class="BlogPostPage__content__body">
                 <div class="BlogPostPage__content__body__image">

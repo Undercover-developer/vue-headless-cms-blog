@@ -13,7 +13,7 @@
                 </span>
             </div>
             <div class="BlogCardLarge__content__title">
-                <h3>{{ title }}</h3>
+                <h3 v-html="title"></h3>
             </div>
             <div class="BlogCardLarge__content__description" v-html="description">
             </div>
